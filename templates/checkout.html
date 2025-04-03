@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wood Oven Pizza</title>
+    <!-- Box Icons -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <!-- Link To CSS (using Flask's url_for to load from static folder) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+  <style>
+    /* General Styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
+  color: #333;
+}
+
+/* Page Title */
+.page-title {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  padding-top:5rem;
+
+}
+
+/* Container for Two-Column Layout */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Left Column (Form) */
+.left-column {
+  flex: 1 1 400px;
+  padding: 1rem;
+  margin: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.left-column h2 {
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 1rem;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: bold;
+}
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.submit-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #ffb411;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.submit-btn:hover {
+  background-color: #e0a30f;
+}
+.back-link {
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+  color: #ffb411;
+  text-decoration: none;
+}
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* Right Column (Summary) */
+.right-column {
+  flex: 1 1 400px;
+  padding: 1rem;
+  margin: 1rem;
+}
+.summary-box {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.summary-box h2 {
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+  text-align: center;
+}
+
+/* Order Summary Table */
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+.summary-table th,
+.summary-table td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: center;
+}
+.totals {
+  text-align: right;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.totals p {
+  margin: 0.3rem 0;
+}
+
+/* Responsive: Stack Columns on Narrow Screens */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .left-column, .right-column {
+    width: 90%;
+    margin: 1rem 0;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+    <header>
+        <a href="{{ url_for('index') }}" class="logo">Wood Oven Pizza</a>
+        <div class="bx bx-menu" id="menu-icon"></div>
+
+        <ul class="navbar">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('menu') }}">Menu</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('order') }}">Order</a></li>
+            <li><a href="{{ url_for('checkout') }}">Check Out</a></li>
+            <li><a href="{{ url_for('admin_login') }}">Admin</a></li>
+        </ul>
+    </header>
+
+  <!-- Page Heading -->
+    <h1 class="page-title">Checkout</h1>
+
+  <!-- Main Container: Two Column Layout -->
+  <div class="container">
+    <!-- Left Column: Customer & Payment Information -->
+    <div class="left-column">
+      <h2>Customer & Payment Information</h2>
+      <form method="post">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="text" id="phone" name="phone" required>
+        </div>
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input type="text" id="address" name="address" required>
+        </div>
+        <div class="form-group">
+          <label for="payment_method">Payment Method</label>
+          <select id="payment_method" name="payment_method" required>
+            <option value="">--Select--</option>
+            <option value="credit">Credit</option>
+            <option value="debit">Debit</option>
+          </select>
+        </div>
+        <!-- Card Information -->
+        <div class="form-group card-info">
+          <label for="card_number">Card Number</label>
+          <input type="text" id="card_number" name="card_number">
+        </div>
+        <div class="form-group card-info">
+          <label for="card_expiry">Card Expiry (MM/YY)</label>
+          <input type="text" id="card_expiry" name="card_expiry">
+        </div>
+        <div class="form-group card-info">
+          <label for="card_cvv">Card CVV</label>
+          <input type="text" id="card_cvv" name="card_cvv">
+        </div>
+        <button type="submit" class="submit-btn">Submit Order</button>
+      </form>
+      <a class="back-link" href="{{ url_for('order') }}">Back to Order Page</a>
+    </div>
+
+    <!-- Right Column: Order Summary -->
+    <div class="right-column">
+      <div class="summary-box">
+        <h2>Order Summary</h2>
+        <table class="summary-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in order_items %}
+            <tr>
+              <td>{{ item.name }}</td>
+              <td>${{ item.price }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>${{ item.subtotal }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="totals">
+          <p><strong>Subtotal:</strong> ${{ total }}</p>
+          <p><strong>Tax (13%):</strong> ${{ tax }}</p>
+          <p><strong>Total (with tax):</strong> ${{ final_total }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER (Optional) -->
+  <footer class="footer_section">
+    <div class="container text-center">
+      <p class="mt-3">
+        &copy; 2025 Wood Oven Pizza. All Rights Reserved.
+      </p>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

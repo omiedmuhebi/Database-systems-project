@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order</title>
+    <!-- Box Icons -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <!-- Link To CSS (using Flask's url_for to load from static folder) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <style>
+    /* Heading styling */
+    .page-heading {
+      padding-top: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #333;
+      border-bottom: 2px solid #ffb411;
+      padding-bottom: 1rem;
+    }
+    /* Grid layout for menu cards */
+    .menu-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin: 2rem;
+    }
+    /* Card styling (same as in your menu page) */
+    .menu-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      padding: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+    .menu-card:hover {
+      transform: translateY(-5px);
+    }
+    .menu-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .menu-card h5 {
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+      color: #333;
+    }
+    .menu-card p {
+      margin-bottom: 0.3rem;
+      color: #666;
+    }
+    .menu-card .price {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #333;
+      margin-bottom: 0.8rem;
+    }
+    /* Quantity input styling */
+    .quantity-row {
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .quantity-row label {
+      font-weight: 500;
+      color: #333;
+    }
+    .quantity-row input[type="number"] {
+      width: 60px;
+      padding: 0.2rem;
+      text-align: center;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    /* Checkout button styling */
+    .checkout-btn {
+      display: block;
+      margin: 2rem auto;
+      padding: 0.75rem 2rem;
+      background: #28a745;
+      color: #fff;
+      border: none;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .checkout-btn:hover {
+      background: #218838;
+    }
+
+    .container1{
+        padding:2rem;
+    }
+  </style>
+
+</head>
+<body>
+    <!-- Navbar -->
+    <header>
+        <a href="{{ url_for('index') }}" class="logo">Wood Oven Pizza</a>
+        <div class="bx bx-menu" id="menu-icon"></div>
+
+        <ul class="navbar">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('menu') }}">Menu</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('order') }}">Order</a></li>
+            <li><a href="{{ url_for('checkout') }}">Check Out</a></li>
+            <li><a href="{{ url_for('admin_login') }}">Admin</a></li>
+        </ul>
+    </header>
+
+
+  <!-- Order Section -->
+  <section class="container my-5">
+    <h2 class="container1">Place Your Order</h2>
+    <form method="post">
+      <div class="menu-container">
+        {% for item in menu_items %}
+        <div class="menu-card">
+          <h5>{{ item.name }}</h5>
+          <p>{{ item.description }}</p>
+          <div class="price">${{ item.price }}</div>
+          <div class="quantity-row">
+            <label for="quantity_{{ item.id }}">Qty:</label>
+            <input type="number" name="quantity_{{ item.id }}" id="quantity_{{ item.id }}" min="0" value="{{ order[item.id|string] }}">
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <button type="submit" class="checkout-btn">Proceed to Checkout</button>
+    </form>
+  </section>
+
+  <!-- Footer Section -->
+    <section class="contact" id="contact">
+        <div class="contact-box">
+            <h3>Wood Oven Pizza</h3>
+            <span>Connect With Us</span>
+            <div class="social">
+                <a href="#"><i class='bx bxl-facebook'></i></a>
+                <a href="#"><i class='bx bxl-twitter'></i></a>
+                <a href="#"><i class='bx bxl-instagram'></i></a>
+            </div>
+        </div>
+        <div class="contact-box">
+            <h3>Menu Links</h3>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('menu') }}">Menu</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('order') }}">Order</a></li>
+            <li><a href="{{ url_for('checkout') }}">Check Out</a></li>
+        </div>
+        <div class="contact-box">
+            <h3>Quick Links</h3>
+            <li><a href="#Contact">Contact</a></li>
+            <li><a href="#Privacy Policy">Privacy Policy</a></li>
+            <li><a href="#Disclaimer">Disclaimer</a></li>
+            <li><a href="#Terms Of Use">Terms Of Use</a></li>
+        </div>
+        <div class="contact-box address">
+            <h3>Contact</h3>
+            <i class='bx bxs-map'><span>209 Queen St S, Mississauga, ON L5M 1L4</span></i>
+            <i class='bx bxs-phone'><span>+1 855 433 5527</span></i>
+            <i class='bx bxs-envelope'><span>woodovenpizza@gmail.com</span></i>
+        </div>
+    </section>
+
+    <!-- Copyright -->
+    <div class="copyright">
+        <p>&#169; 2025 copy right Wood Oven Pizza All Right Reserved.</p>
+    </div>
+
+    <!-- Scroll Reveal -->
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <!-- Link To JavaScript -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+</body>
+</html>

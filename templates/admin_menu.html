@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Admin Menu Management</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .header-actions {
+        text-align: right;
+        margin-bottom: 1rem;
+      }
+      .logout-btn {
+        background: #ffb411;
+        color: #fff;
+        padding: 8px 15px;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background 0.3s ease;
+      }
+      .logout-btn:hover {
+        background: #e0a30d;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 1rem;
+      }
+      .flash-messages ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1rem;
+        text-align: center;
+      }
+      .flash-messages li {
+        margin: 0.5rem 0;
+        color: #555;
+      }
+      .add-new {
+        display: inline-block;
+        margin-bottom: 1rem;
+        padding: 8px 15px;
+        background: #ffb411;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background 0.3s ease;
+      }
+      .add-new:hover {
+        background: #e0a30d;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
+      th, td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        text-align: center;
+      }
+      th {
+        background: #ffb411;
+        color: #fff;
+      }
+      tr:nth-child(even) {
+        background: #f9f9f9;
+      }
+      /* ACTION LINKS: Vertical layout for Edit above Delete */
+      .action-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+      .action-links a,
+      .action-links button {
+        background: #ffb411;
+        color: #fff;
+        padding: 6px 10px;
+        text-decoration: none;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        font-size: 0.9rem;
+        width: 80px;
+        text-align: center;
+      }
+      .action-links a:hover,
+      .action-links button:hover {
+        background: #e0a30d;
+      }
+      /* Style the delete form as a button */
+      .action-links form {
+        display: inline;
+        margin: 0;
+      }
+      .action-links form input[type="submit"] {
+        background: #ffb411;
+        color: #fff;
+        padding: 6px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        font-size: 0.9rem;
+        width: 80px;
+      }
+      .action-links form input[type="submit"]:hover {
+        background: #e0a30d;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Logout Button at Top Right -->
+      <div class="header-actions">
+        <a class="logout-btn" href="{{ url_for('admin_logout') }}">Logout</a>
+      </div>
+
+      <h1>Admin Menu Management</h1>
+
+      <div class="flash-messages">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul>
+              {% for msg in messages %}
+                <li>{{ msg }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+      </div>
+
+      <p><a class="add-new" href="{{ url_for('new_menu_item') }}">Add New Menu Item</a></p>
+
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+        {% for item in items %}
+        <tr>
+          <td>{{ item.id }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.description }}</td>
+          <td>${{ item.price }}</td>
+          <td class="action-links">
+            <a href="{{ url_for('edit_menu_item', item_id=item.id) }}">Edit</a>
+            <form action="{{ url_for('delete_menu_item', item_id=item.id) }}" method="post">
+              <input type="submit" value="Delete">
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </body>
+</html>

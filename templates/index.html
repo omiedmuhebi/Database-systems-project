@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wood Oven Pizza</title>
+    <!-- Box Icons -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <!-- Link To CSS (using Flask's url_for to load from static folder) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- Navbar -->
+    <header>
+        <a href="{{ url_for('index') }}" class="logo">Wood Oven Pizza</a>
+        <div class="bx bx-menu" id="menu-icon"></div>
+
+        <ul class="navbar">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('menu') }}">Menu</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('order') }}">Order</a></li>
+            <li><a href="{{ url_for('checkout') }}">Check Out</a></li>
+            <li><a href="{{ url_for('admin_login') }}">Admin</a></li>
+        </ul>
+    </header>
+    <!-- Home Section -->
+    <section class="home" id="home">
+        <div class="home-text">
+            <h1>Wood Oven Pizza</h1>
+            <h2>Where Fire Meets Flavor <br> every Bite Tells a Story!</h2>
+            <a href="{{ url_for('menu') }}" class="btn">Menu</a>
+        </div>
+        <div class="home-img">
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&amp;w=1000&amp;q=80.png" alt="">
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-img">
+            <img src="https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395__480.jpg" alt="">
+        </div>
+        <div class="about-text">
+            <span>About Us</span>
+            <h2>We make good and <br> tasty pizzas</h2>
+            <p>At Wood Oven Pizza, we pride ourselves on creating the most authentic and delicious pizzas using traditional methods and the freshest ingredients. Our wood-fired ovens imbue each pizza with a unique smoky flavor and a perfectly crisp crust.</p>
+            <a href="{{ url_for('about') }}" class="btn">Learn More</a>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu" id="menu">
+        <div class="heading">
+            <span>Menu</span>
+            <h2>Tasty menu of the week</h2>
+        </div>
+        <div class="menu-container">
+            <!-- Box 1 -->
+            <div class="box">
+                <div class="box-img">
+                    <img src="https://images.pexels.com/photos/803290/pexels-photo-803290.jpeg?cs=srgb&amp;dl=pexels-beqa-tefnadze-803290.jpg&amp;fm=jpg" alt="">
+                </div>
+                <h2>Cheese Pizza</h2>
+                <h3>Tasty Food</h3>
+                <span>$30.05</span>
+                <i class='bx bx-cart-alt'></i>
+            </div>
+            <!-- Box 2 -->
+            <div class="box">
+                <div class="box-img">
+                    <img src="https://img.freepik.com/free-photo/pepperoni-pizza-with-sausages-cheese-dark-wooden-table_220768-9277.jpg?size=626&amp;ext=jpg" alt="">
+                </div>
+                <h2>Tropical Pizza</h2>
+                <h3>Tasty Food</h3>
+                <span>$42.05</span>
+                <i class='bx bx-cart-alt'></i>
+            </div>
+            <!-- Box 3 -->
+            <div class="box">
+                <div class="box-img">
+                    <img src="https://img.freepik.com/free-photo/top-view-pepperoni-pizza-with-mushroom-sausages-bell-pepper-olive-corn-black-wooden_141793-2158.jpg?w=740&amp;t=st=1661842808~exp=1661843408~hmac=c40f0c154036b96b1dba17947c4e4f7c07f40db983106490402bb0b7b6ec452e" alt="">
+                </div>
+                <h2>Mecaroni Pizza</h2>
+                <h3>Tasty Food</h3>
+                <span>$12.05</span>
+                <i class='bx bx-cart-alt'></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-box">
+            <h3>Wood Oven Pizza</h3>
+            <span>Connect With Us</span>
+            <div class="social">
+                <a href="#"><i class='bx bxl-facebook'></i></a>
+                <a href="#"><i class='bx bxl-twitter'></i></a>
+                <a href="#"><i class='bx bxl-instagram'></i></a>
+            </div>
+        </div>
+        <div class="contact-box">
+            <h3>Menu Links</h3>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('menu') }}">Menu</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('order') }}">Order</a></li>
+            <li><a href="{{ url_for('checkout') }}">Check Out</a></li>
+        </div>
+        <div class="contact-box">
+            <h3>Quick Links</h3>
+            <li><a href="#Contact">Contact</a></li>
+            <li><a href="#Privacy Policy">Privacy Policy</a></li>
+            <li><a href="#Disclaimer">Disclaimer</a></li>
+            <li><a href="#Terms Of Use">Terms Of Use</a></li>
+        </div>
+        <div class="contact-box address">
+            <h3>Contact</h3>
+            <i class='bx bxs-map'><span>209 Queen St S, Mississauga, ON L5M 1L4</span></i>
+            <i class='bx bxs-phone'><span>+1 855 433 5527</span></i>
+            <i class='bx bxs-envelope'><span>woodovenpizza@gmail.com</span></i>
+        </div>
+    </section>
+
+    <!-- Copyright -->
+    <div class="copyright">
+        <p>&#169; 2025 copy right Wood Oven Pizza All Right Reserved.</p>
+    </div>
+
+    <!-- Scroll Reveal -->
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <!-- Link To JavaScript -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
