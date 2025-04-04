@@ -4,7 +4,7 @@ import pymysql
 import credentials
 
 app = Flask(__name__, template_folder="templates")
-app.secret_key = 'secret_key'
+app.secret_key = 'secret_key'  # Replace with a secure random string
 
 class Database:
     def __init__(self):
@@ -17,9 +17,10 @@ class Database:
         )
         self.cur = self.con.cursor()
 
+    # Updated to return only active menu items
     def get_menu_items(self):
         try:
-            self.cur.execute("SELECT * FROM MenuItem")
+            self.cur.execute("SELECT * FROM MenuItem WHERE is_active = TRUE")
             result = self.cur.fetchall()
         except pymysql.Error as e:
             print("Error retrieving menu items:", e)
@@ -159,9 +160,10 @@ class Database:
             self.con.close()
         return msg
 
+    # Soft delete: Update the item to set is_active to FALSE
     def delete_menu_item(self, item_id):
         try:
-            self.cur.execute("DELETE FROM MenuItem WHERE id = %s", (item_id,))
+            self.cur.execute("UPDATE MenuItem SET is_active = FALSE WHERE id = %s", (item_id,))
             self.con.commit()
             msg = "Menu item deleted successfully!"
         except pymysql.Error as e:
@@ -172,6 +174,7 @@ class Database:
             self.con.close()
         return msg
 
+# Flask Routes
 
 @app.route('/')
 def index():
@@ -183,12 +186,9 @@ def menu():
     items = db.get_menu_items()
     return render_template("menu.html", items=items)
 
-
 @app.route('/about')
 def about():
     return render_template("about.html")
-
-
 
 # Order and Checkout routes
 @app.route('/order', methods=['GET', 'POST'])
@@ -234,7 +234,6 @@ def checkout():
                 'quantity': qty,
                 'subtotal': subtotal
             })
-    # Round subtotal, tax, and final total
     total = round(total, 2)
     tax = round(total * 0.13, 2)
     final_total = round(total + tax, 2)
@@ -248,7 +247,6 @@ def checkout():
         card_expiry = request.form.get('card_expiry', '')
         card_cvv = request.form.get('card_cvv', '')
 
-        # Validate card expiry (MM/YY format)
         try:
             exp_month, exp_year = card_expiry.split('/')
             exp_month = int(exp_month)
@@ -287,7 +285,6 @@ def checkout():
         return redirect(url_for('order_confirmation', order_id=order_id))
 
     return render_template("checkout.html", total=total, tax=tax, final_total=final_total, order_items=order_items_details)
-
 
 @app.route('/order_confirmation/<int:order_id>')
 def order_confirmation(order_id):
@@ -381,7 +378,6 @@ def admin_logout():
     session.pop('admin', None)
     flash('Logged out successfully!', 'success')
     return redirect(url_for('admin_login'))
-
 
 if __name__ == '__main__':
     app.run(debug=True)
